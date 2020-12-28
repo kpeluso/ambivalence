@@ -33,7 +33,7 @@ def main():
       3. success calculation: number showing % count of rounds where avg earnings of agents of type1 > those of type2
         Called "success" because this determines how well the truth-telling incentives actuall hold
   '''
-  output_file("stocks.html", title="stocks.py example")
+  output_file('kong'+str(KONG)+'rounds'+str(NUM_ROUNDS)+'nqr'+str(NUM_QUESTIONS_PER_ROUND)+"dmi-sim.html", title="dmi-test")
   plots = [
     [
       None, # will be replaced with information : Div(text='<h4>Regime Index</h4><p>'+str(regimeIdx)+'</p>'+dict2html(seed)),

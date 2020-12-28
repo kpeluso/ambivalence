@@ -13,7 +13,7 @@ NUM_ROUNDS = 100 # grow as we're more sure simulation's efficacy
 
 # True => use kong map to get budget-adjusted scores vs
 # False => use normalized scores directly from dmi
-KONG = True
+KONG = False
 # agents in each committee
 NUM_AGENTS = 5 # try with 3, 5, 10, 20
 # how large dmi task batch is in each round
