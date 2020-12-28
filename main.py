@@ -13,11 +13,7 @@ from utils import createQuestions, createCommittee, cumulate, getNumOf1
 from agent import getAgentAnswer
 from dmi import dmi, kong
 from constants import BUDGET, KONG, NUM_AGENTS, NUM_QUESTIONS_PER_ROUND, NUM_ROUNDS, REGIME_SEEDS
-
-# constants to position visualizations
-LINE = 1
-BOX = 2
-CORR = 2
+from vizConstants import INFO, CORR, CORR_WIDTH, LINE, BOX, DOT_SIZE, TRANS, disperse, dict2html
 
 def main():
   '''
@@ -34,51 +30,56 @@ def main():
     - For each regime, plot
       1. line graph cumulative earnings per timestep per agent
       2. box-whisker/bio-dot-gram of distribution of cumulative earnings per agent
-      3. box-whisker/bio-dot-gram **to show magnitude of overlap in earnings
-        between agent type in each round**
+      3. success calculation: number showing % count of rounds where avg earnings of agents of type1 > those of type2
+        Called "success" because this determines how well the truth-telling incentives actuall hold
   '''
   output_file("stocks.html", title="stocks.py example")
   plots = [
     [
-      Div(text='<h4>Regime Index</h4><p>'+str(idx)+'</p>'),
+      None, # will be replaced with information : Div(text='<h4>Regime Index</h4><p>'+str(regimeIdx)+'</p>'+dict2html(seed)),
+      None, # will be replaced with success calculation
       figure(title="Cumulative Earnings Per Agent Per Round"),
-      figure(title='Cumulative Earnings Per Agent')
-      # None # will be replaced with: Div(text='<h4>% Avg Time Agent Type1 Earnings > Type2</h4><p>'+str(ANSWER)+'</p>')
-    ] for idx in range(len(REGIME_SEEDS))
+      figure(title='Cumulative Earnings Per Agent', x_range=np.arange(NUM_AGENTS).astype(str))
+    ] for _ in range(len(REGIME_SEEDS))
   ]
   for regimeIdx, seed in enumerate(REGIME_SEEDS):
+    plots[regimeIdx][INFO] = Div(text='<h4>Regime Index</h4><p>'+str(regimeIdx)+'</p><br></br>'+dict2html(seed))
     cumulativeEarnings = [] # NUM_ROUNDS x NUM_AGENTS matrix, for each regime
     committee = createCommittee(NUM_AGENTS, seed['lambda'], seed['delta1'], seed['delta2'])
     # viz setup for regime
     plots[regimeIdx][LINE].grid.grid_line_alpha=0.3
     plots[regimeIdx][LINE].xaxis.axis_label = 'Round'
     plots[regimeIdx][LINE].yaxis.axis_label = 'Accumulated Earnings'
-    for round in range(NUM_ROUNDS):
+    for _ in range(NUM_ROUNDS):
       # create questions
       questions = createQuestions(NUM_QUESTIONS_PER_ROUND, seed['bias'])
-      # print(questions, ':questions')
       # committee answer questions
       answersPerAgent = [[getAgentAnswer(agent, signal) for signal in questions] for agent in committee]
-      # print(answersPerAgent, ':answersPerAgent')
       # dmi ran
       normalizedScores = dmi(answersPerAgent)
-      # print(normalizedScores, ':normalizedScores')
       # map scores to budget-adjusted payments
       budgetAdjustedScores = kong(normalizedScores, BUDGET, NUM_AGENTS) if KONG else normalizedScores
-      # print(budgetAdjustedScores, ':budgetAdjustedScores')
       # update cumulativeEarnings
       if len(cumulativeEarnings) == 0:
         cumulativeEarnings = [np.array(budgetAdjustedScores)]
       else:
         cumulativeEarnings = np.append(cumulativeEarnings, [np.array(budgetAdjustedScores)], axis=0)
-      # quit()
-    # visualize cumulative earnings over rounds line graphs
+    # setup viz
     rounds = list(range(NUM_ROUNDS))
-    for agent in range(getNumOf1(NUM_AGENTS, seed['lambda'])):
+    numAgent1 = getNumOf1(NUM_AGENTS, seed['lambda'])
+    # calculate success
+    percentCount = 100*sum([1 if v > 0 else 0 for v in np.average(cumulativeEarnings[:,:numAgent1], axis=1) - np.average(cumulativeEarnings[:,numAgent1:], axis=1)])/NUM_ROUNDS
+    plots[regimeIdx][CORR] = Div(width=CORR_WIDTH, text='<h4>% count of rounds where avg earnings of agents of type1 > those of type2</h4><p>'+str(percentCount)+'</p>')
+    # visualize cumulative earnings over rounds line graphs
+    for agent in range(numAgent1):
       plots[regimeIdx][LINE].line(rounds, cumulate(cumulativeEarnings[:,agent]), color=Blues[8][np.random.randint(3,7)])
-    for agent in range(NUM_AGENTS - getNumOf1(NUM_AGENTS, seed['lambda'])):
+    for agent in range(numAgent1, NUM_AGENTS):
       plots[regimeIdx][LINE].line(rounds, cumulate(cumulativeEarnings[:,agent]), color=Oranges[8][np.random.randint(3,7)])
-    # break # just 1st regime
+    # vizualize distribution of each agent's earnings per round
+    for agent in range(numAgent1):
+      plots[regimeIdx][BOX].circle(disperse(np.ones(NUM_ROUNDS)*agent), cumulativeEarnings[:,agent], color=Blues[8][4], fill_alpha=0.2, size=DOT_SIZE)
+    for agent in range(numAgent1, NUM_AGENTS):
+      plots[regimeIdx][BOX].circle(disperse(np.ones(NUM_ROUNDS)*agent), cumulativeEarnings[:,agent], color=Oranges[8][4], fill_alpha=0.2, size=DOT_SIZE)
 
   show(gridplot(plots, plot_width=400, plot_height=400))
 

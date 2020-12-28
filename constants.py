@@ -7,7 +7,7 @@ This file serves as the control center / parameter tuning room for rest of the s
 
 DOMAIN = 2 # only consider binary (eg yes/no) question setting
 BUDGET = 10
-NUM_ROUNDS = 10 # grow as we're more sure simulation's efficacy
+NUM_ROUNDS = 100 # grow as we're more sure simulation's efficacy
 
 # These parameters *could* be varied:
 
@@ -17,7 +17,7 @@ KONG = True
 # agents in each committee
 NUM_AGENTS = 5 # try with 3, 5, 10, 20
 # how large dmi task batch is in each round
-NUM_QUESTIONS_PER_ROUND = 10 # try low and high
+NUM_QUESTIONS_PER_ROUND = 50 # try low and high
 
 # These parameters *will* be varied:
 

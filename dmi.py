@@ -7,6 +7,8 @@ from itertools import combinations as combs
 import operator as op
 import numpy as np
 
+from constants import DOMAIN
+
 def ncr(n,r):
   '''@dev Source: https://stackoverflow.com/a/4941932'''
   r = min(r, n-r)
@@ -41,7 +43,7 @@ def dmi(answers):
   @param answers :: List(N)<List<Int>>
   @return scores :: List<Float> = scores for committee members plus lower bound
   '''
-  domain = 2
+  domain = DOMAIN
   N = len(answers)
   scores = np.zeros(N)
   numQs = len(answers[0])

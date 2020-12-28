@@ -60,3 +60,16 @@ So, actually there are a few different regimes,
   - `numAgents` = number of agents
   - numAgents, numQuestions are set globally and just determine how clear results are
     - as a consequence, each regime loops through same number of Qs
+
+# Helpful Links for Dev
+
+1. [line graph](https://docs.bokeh.org/en/latest/docs/gallery/stocks.html)
+2. [boxplot](https://docs.bokeh.org/en/latest/docs/gallery/boxplot.html)
+3. [palettes](https://docs.bokeh.org/en/latest/docs/reference/palettes.html)
+4. [to edit div](https://docs.bokeh.org/en/latest/docs/reference/models/widgets.markups.html?highlight=div#bokeh.models.widgets.markups.Div)
+5. [categorical data](https://docs.bokeh.org/en/latest/docs/user_guide/categorical.html)
+6. [examples, Bokeh homepage](https://docs.bokeh.org/en/latest/)
+
+# License
+
+MIT
