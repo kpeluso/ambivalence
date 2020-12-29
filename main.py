@@ -36,20 +36,23 @@ def main():
   output_file('kong'+str(KONG)+'rounds'+str(NUM_ROUNDS)+'nqr'+str(NUM_QUESTIONS_PER_ROUND)+"dmi-sim.html", title="dmi-test")
   plots = [
     [
-      None, # will be replaced with information : Div(text='<h4>Regime Index</h4><p>'+str(regimeIdx)+'</p>'+dict2html(seed)),
+      None, # will be replaced with information
       None, # will be replaced with success calculation
       figure(title="Cumulative Earnings Per Agent Per Round"),
       figure(title='Cumulative Earnings Per Agent', x_range=np.arange(NUM_AGENTS).astype(str))
     ] for _ in range(len(REGIME_SEEDS))
   ]
   for regimeIdx, seed in enumerate(REGIME_SEEDS):
-    plots[regimeIdx][INFO] = Div(text='<h4>Regime Index</h4><p>'+str(regimeIdx)+'</p><br></br>'+dict2html(seed))
+    plots[regimeIdx][INFO] = Div(text='<h4>Regime Info</h4><br></br>'+dict2html(seed), width=CORR_WIDTH)
     cumulativeEarnings = [] # NUM_ROUNDS x NUM_AGENTS matrix, for each regime
     committee = createCommittee(NUM_AGENTS, seed['lambda'], seed['delta1'], seed['delta2'])
     # viz setup for regime
     plots[regimeIdx][LINE].grid.grid_line_alpha=0.3
     plots[regimeIdx][LINE].xaxis.axis_label = 'Round'
     plots[regimeIdx][LINE].yaxis.axis_label = 'Accumulated Earnings'
+    plots[regimeIdx][BOX].grid.grid_line_alpha=0.3
+    plots[regimeIdx][BOX].xaxis.axis_label = 'Agent'
+    plots[regimeIdx][BOX].yaxis.axis_label = 'Earnings Per Round'
     for _ in range(NUM_ROUNDS):
       # create questions
       questions = createQuestions(NUM_QUESTIONS_PER_ROUND, seed['bias'])

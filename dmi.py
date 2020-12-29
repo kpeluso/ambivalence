@@ -35,7 +35,7 @@ def kong(scores, B, n):
   '''
   sbar = np.average(scores)
   bma = np.max(scores) - np.min(scores) + 1
-  return list(map(lambda si: int((si-sbar+bma)*B//bma//n), scores))
+  return list(map(lambda si: int((si-sbar+bma)*B/bma/n), scores))
 
 def dmi(answers):
   '''

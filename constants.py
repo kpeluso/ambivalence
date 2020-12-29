@@ -13,7 +13,7 @@ NUM_ROUNDS = 100 # grow as we're more sure simulation's efficacy
 
 # True => use kong map to get budget-adjusted scores vs
 # False => use normalized scores directly from dmi
-KONG = False
+KONG = True
 # agents in each committee
 NUM_AGENTS = 5 # try with 3, 5, 10, 20
 # how large dmi task batch is in each round
@@ -45,44 +45,24 @@ Bias = {
 
 REGIME_SEEDS = [
   # controls
-  # 0 - all honest, fully-informed agents, no bias
-  { 'lambda': Lambda['all'], 'delta1': Delta['none'], 'delta2': Delta['un'], 'bias': Bias['none'] },
-  # 1 - all random agents, no bias
-  { 'lambda': Lambda['none'], 'delta1': Delta['un'], 'delta2': Delta['all'], 'bias': Bias['none'] },
-  # 2 - all honest, fully-informed agents, some bias
-  { 'lambda': Lambda['all'], 'delta1': Delta['none'], 'delta2': Delta['un'], 'bias': Bias['slight'] },
-  # 3 - all random agents, some bias
-  { 'lambda': Lambda['none'], 'delta1': Delta['un'], 'delta2': Delta['all'], 'bias': Bias['slight'] },
+  { 'id': 0, 'lambda': Lambda['all'], 'delta1': Delta['none'], 'delta2': Delta['un'], 'bias': Bias['none'], 'description': 'all honest, fully-informed agents, no bias'},
+  { 'id': 1, 'lambda': Lambda['none'], 'delta1': Delta['un'], 'delta2': Delta['all'], 'bias': Bias['none'], 'description': 'all random agents, no bias'},
+  { 'id': 2, 'lambda': Lambda['all'], 'delta1': Delta['none'], 'delta2': Delta['un'], 'bias': Bias['slight'], 'description': 'all honest, fully-informed agents, some bias'},
+  { 'id': 3, 'lambda': Lambda['none'], 'delta1': Delta['un'], 'delta2': Delta['all'], 'bias': Bias['slight'], 'description': 'all random agents, some bias'},
 
-  # more honest than random agents
-  # 4 - no bias
-  { 'lambda': Lambda['more'], 'delta1': Delta['all'], 'delta2': Delta['none'], 'bias': Bias['none'] },
-  # 5 - some bias
-  { 'lambda': Lambda['more'], 'delta1': Delta['all'], 'delta2': Delta['none'], 'bias': Bias['slight'] },
-  # 6 - all bias
-  { 'lambda': Lambda['more'], 'delta1': Delta['all'], 'delta2': Delta['none'], 'bias': Bias['all'] },
+  { 'id': 4, 'lambda': Lambda['more'], 'delta1': Delta['none'], 'delta2': Delta['all'], 'bias': Bias['none'], 'description': 'more honest than random agents, no bias'},
+  { 'id': 5, 'lambda': Lambda['more'], 'delta1': Delta['none'], 'delta2': Delta['all'], 'bias': Bias['slight'], 'description': 'more honest than random agents, some bias'},
+  { 'id': 6, 'lambda': Lambda['more'], 'delta1': Delta['none'], 'delta2': Delta['all'], 'bias': Bias['all'], 'description': 'more honest than random agents, all bias'},
 
-  # even honest, random agents
-  # 7 - no bias
-  { 'lambda': Lambda['even'], 'delta1': Delta['all'], 'delta2': Delta['none'], 'bias': Bias['none'] },
-  # 8 - some bias
-  { 'lambda': Lambda['even'], 'delta1': Delta['all'], 'delta2': Delta['none'], 'bias': Bias['slight'] },
-  # 9 - all bias
-  { 'lambda': Lambda['even'], 'delta1': Delta['all'], 'delta2': Delta['none'], 'bias': Bias['all'] },
+  { 'id': 7, 'lambda': Lambda['even'], 'delta1': Delta['none'], 'delta2': Delta['all'], 'bias': Bias['none'], 'description': 'even honest & random agents, no bias'},
+  { 'id': 8, 'lambda': Lambda['even'], 'delta1': Delta['none'], 'delta2': Delta['all'], 'bias': Bias['slight'], 'description': 'even honest & random agents, some bias'},
+  { 'id': 9, 'lambda': Lambda['even'], 'delta1': Delta['none'], 'delta2': Delta['all'], 'bias': Bias['all'], 'description': 'even honest & random agents, all bias'},
 
-  # more mostly honest than random agents
-  # 10 - no bias
-  { 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['none'], 'bias': Bias['none'] },
-  # 11 - some bias
-  { 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['none'], 'bias': Bias['slight'] },
-  # 12 - all bias
-  { 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['none'], 'bias': Bias['all'] },
+  { 'id': 10, 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['all'], 'bias': Bias['none'], 'description': 'more mostly honest than random agents, no bias'},
+  { 'id': 11, 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['all'], 'bias': Bias['slight'], 'description': 'more mostly honest than random agents, some bias'},
+  { 'id': 12, 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['all'], 'bias': Bias['all'], 'description': 'more mostly honest than random agents, all bias'},
 
-  # even slightly honest, random agents
-  # 13 - no bias
-  { 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['none'], 'bias': Bias['none'] },
-  # 14 - some bias
-  { 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['none'], 'bias': Bias['slight'] },
-  # 15 - all bias
-  { 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['none'], 'bias': Bias['all'] },
+  { 'id': 13, 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['all'], 'bias': Bias['none'], 'description': 'even slightly honest & random agents, no bias'},
+  { 'id': 14, 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['all'], 'bias': Bias['slight'], 'description': 'even slightly honest & random agents, some bias'},
+  { 'id': 15, 'lambda': Lambda['even'], 'delta1': Delta['slight'], 'delta2': Delta['all'], 'bias': Bias['all'], 'description': 'even slightly honest & random agents, all bias'},
 ]
